@@ -1,3 +1,5 @@
+SED=$(shell command -v gsed || command -v sed)
+
 .PHONY: test
 test:
 	go test -race ./...
@@ -31,6 +33,14 @@ quality:
 update-aws-deps:
 	@grep aws-sdk-go-v2 go.mod | grep -v '// indirect' | sed 's/^[ [[:blank:]]]*//g' | sed 's/[[:space:]]v.*//g' | xargs go get
 	@go mod tidy
+
+.PHONY: bump-manifest
+bump-manifest:
+	@[ $$NEW_VERSION ] || ( echo "env 'NEW_VERSION' is not set"; exit 1 )
+	@current_version=$$(cat plugin.yaml | grep 'version' | awk '{ print $$2}' | tr -d '"') ;\
+	echo Current version: $$current_version ;\
+	$(SED) -i -e "s/$$current_version/$$NEW_VERSION/g" plugin.yaml ;\
+
 
 .PHONY: clean
 clean:
