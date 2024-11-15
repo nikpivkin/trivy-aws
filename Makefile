@@ -43,4 +43,5 @@ bump-manifest:
 	@[ $$NEW_VERSION ] || ( echo "env 'NEW_VERSION' is not set"; exit 1 )
 	@current_version=$$(cat plugin.yaml | grep 'version' | awk '{ print $$2}' | tr -d '"') ;\
 	echo Current version: $$current_version ;\
+	echo New version: $$NEW_VERSION ;\
 	$(SED) -i -e "s/$$current_version/$$NEW_VERSION/g" plugin.yaml ;\

@@ -20,7 +20,7 @@ jobs:
         run: |
           make bump-manifest
           if [ -n "$(git status --porcelain plugin.yaml)" ]; then
-            echo "The version of the plugin in manifest is not updated. Please run 'make bump-manifest'"
+            echo "The version of the plugin in manifest is not updated. Please run 'NEW_VERSION=version make bump-manifest'"
             exit 1
           fi
 
